@@ -2,8 +2,13 @@ package sandbox
 
 object Main extends App {
 
-
-
+  import sandbox.Monads._
+  println(x.value) //now (memoized)
+  println(x.value)
+  println(y.value) //always (lazy and not memoized)
+  println(y.value)
+  println(z.value) // later (lazy and memoized)
+  println(z.value)
 
   // CHAPTER 1
 //  import sandbox.Chapter1._
