@@ -1,0 +1,5 @@
+package sandbox
+
+object Semigroupal {
+
+}

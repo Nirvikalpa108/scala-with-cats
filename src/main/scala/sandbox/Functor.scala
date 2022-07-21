@@ -201,6 +201,7 @@ object Functors {
   // page 69 *** go through this with Tim **** 3.7.2
 
   //3.8 Partial Unification *** please can we discuss the overview to this topic
+  //polymorphic function - takes a type parameter, so I can change the types
 
   //3.9 Summary
   // functors represent sequencing behaviours

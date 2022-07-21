@@ -63,7 +63,9 @@ object Monads {
   123.asRight[String] //Right(123)
   123.asRight[String].swap //Left(123)
 
-  //***4.4.5 talk through this with tim
+  //4.4.5 talk through this with tim
+  //MonadError will stop as soon as it encounters an error
+  //Sometimes we don't want that!
 
   //4.5 Aside: Error Handling and MonadError
   //MonadError is a typeclass, which abstracts over Either-like data types that are used for error handling.
@@ -143,6 +145,21 @@ object Monads {
   // we can define a Monad for a custom type by providing implementations of flatMap, pure and tailRecM.
   //tailRecM is an optimisation used in Cats to limit the amount of stack space consumed by nested flatMap calls.
 
-  //4.10.1 Exercise *** Pair on this as I didn't have time to do it myself
+  //4.10.1 Exercise
+  // Paired on this with Tim. I keep forgetting to wrap the match case Branch in a branch lol
+  sealed trait Tree[+A]
+  final case class Branch[A](left: Tree[A], right: Tree[A])
+    extends Tree[A]
+  final case class Leaf[A](value: A) extends Tree[A]
+  def branch[A](left: Tree[A], right: Tree[A]): Tree[A] = Branch(left, right)
+  def leaf[A](value: A): Tree[A] = Leaf(value)
+
+  implicit val MonadTree = new Monad[Tree] {
+    override def pure[A](a: A): Tree[A] = Leaf(a)
+    override def flatMap[A, B](value: Tree[A])(func: A => Tree[B]): Tree[B] = value match {
+      case Branch(left, right) => Branch(flatMap(left)(func), flatMap(right)(func))
+      case Leaf(value) => func(value)
+    }
+  }
 
 }
